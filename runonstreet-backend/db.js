@@ -1,20 +1,14 @@
 // db.js
 const { Pool } = require("pg");
-require("dotenv").config();
+
+// ⚠️ Mets ici TA vraie connection string Neon (celle que tu as déjà dans server.js)
+const connectionString = "postgresql://neondb_owner:npg_Zlpv6sIiw3CD@ep-snowy-recipe-agbssmng-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
-pool
-  .connect()
-  .then((client) => {
-    console.log("✅ Connecté à PostgreSQL");
-    client.release();
-  })
-  .catch((err) => {
-    console.error("❌ Erreur de connexion PostgreSQL:", err.message);
-  });
-
-module.exports = { pool };
+module.exports = pool;
